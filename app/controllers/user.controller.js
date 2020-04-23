@@ -110,6 +110,11 @@ exports.delete = (req, res) => {
 
 
 exports.login = (req, res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
   User.findByEmail(req.body.user.email, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -175,3 +180,24 @@ exports.updatePassword = (req, res) =>{
       else res.send(data);
     });
 }
+
+exports.uploadImage = (req, res)=>{
+console.log('req', req);
+  User.updateImagePath(
+    req.userId,
+    req.file.filename,
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found user with id ${req.userId}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating user with id " + req.userId
+          });
+        }
+      } else res.send(data);
+    }
+  );
+};

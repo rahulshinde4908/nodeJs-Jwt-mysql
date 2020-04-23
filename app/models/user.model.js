@@ -1,5 +1,6 @@
 const sql = require("./db.js");
 var bcrypt = require("bcryptjs");
+
 // constructor
 const user = function(user) {
   this.email = user.email;
@@ -140,11 +141,9 @@ user.updatePassword = (req, result) => {
         result(null, { message: "Old Password Invalid !" });
         return;
       }else{
-        let newPassword = req.password;
-        // console.log('new = ', req.newPassword )
         sql.query(
           "UPDATE users SET password = ?  WHERE id = ?",
-          [newPassword, req.id],
+          [req.password, req.id],
           (err, res) => {
             console.log("error: ", err,'res', res);
             if (err) {
@@ -159,5 +158,32 @@ user.updatePassword = (req, result) => {
     }
   });
 };
+
+user.updateImagePath = (id, user, result) => {
+  console.log('id', id, 'image', user);
+  
+  sql.query(
+    "UPDATE users SET image = ?  WHERE id = ?",
+    [user, id],
+    (err, res) => {
+      console.log('err', err, 'res', res);
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        // not found user with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("Image updated: ", { id: id, ...user });
+      result(null, `http://localhost:3000/public/profile/${user}`);
+    }
+  );
+};
+
 
 module.exports = user;

@@ -1,4 +1,19 @@
 const authJwt = require('../middleware/authJwt');
+const multer = require('multer');
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + '/../public/profile')
+  },
+  filename: function (req, file, cb) {
+    const fileArray = file.originalname.split('.');
+    const fileExtension = fileArray[fileArray.length - 1];
+    cb(null, Date.now() + '.' + fileExtension)
+  }
+})
+
+var upload = multer({ storage: storage })
+
 module.exports = app => {
     const users = require("../controllers/user.controller.js");
     // Create a new user
@@ -22,4 +37,6 @@ module.exports = app => {
     // Update user password
     app.put("/api/updatePassword",  [authJwt.verifyToken],users.updatePassword);
 
+    app.post("/api/uploadImage",upload.single('avatar'),[authJwt.verifyToken], users.uploadImage);
   };
+  
