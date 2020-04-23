@@ -11,8 +11,10 @@ mobile VARCHAR(50),
 city VARCHAR(50),
 age INTEGER,
 password VARCHAR(200),
-userName VARCHAR(50)
+userName VARCHAR(50),
+image varchar(255)
 );
+
 
 
 
