@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require('cors');
+var path = require('path');
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
 
@@ -14,15 +15,11 @@ app.use(function(req, res, next) {
   next();
 });
 
-// // database
-// const db = require("./app/models");
-// const Role = db.role;
-
-// db.sequelize.sync();
-
+app.use('/public', express.static('public'))
 app.use(cors());
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to maxDigi application." });

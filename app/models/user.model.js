@@ -37,13 +37,14 @@ user.findById = (userId, result) => {
     if (res.length) {
       console.log("found user: ", res[0]);
       result(null, {user:{
-          firstName: res[0].firstName,
-          lastName: res[0].lastName,
+          firstName: res[0].firstname,
+          lastName: res[0].lastname,
           userName: res[0].userName,
           age: res[0].age,
           city: res[0].city,
           mobile: res[0].mobile,
-          email: res[0].email
+          email: res[0].email,
+          profileURL: `http://localhost:3000/public/profile/${res[0].image}`
       }});
       return;
     }
@@ -68,11 +69,11 @@ user.getAll = result => {
 
 user.updateById = (id, user, result) => {
   sql.query(
-    "UPDATE users SET email = ?, firstName = ?, lastName = ?, userName = ?, age = ?, mobile = ?, city = ?  WHERE id = ?",
+    "UPDATE users SET email = ?, firstname = ?, lastname = ?, userName = ?, age = ?, mobile = ?, city = ?  WHERE id = ?",
     [user.email, user.firstName,user.lastName, user.userName,user.age,user.mobile,user.city, id],
     (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        console.log("err= r: ", err);
         result(null, err);
         return;
       }
@@ -180,7 +181,7 @@ user.updateImagePath = (id, user, result) => {
       }
 
       console.log("Image updated: ", { id: id, ...user });
-      result(null, `http://localhost:3000/public/profile/${user}`);
+      result(null, {profileUrl: `http://localhost:3000/public/profile/${user}`});
     }
   );
 };
