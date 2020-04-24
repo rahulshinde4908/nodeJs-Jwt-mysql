@@ -31,6 +31,7 @@ curl --location --request POST 'http://localhost:3000/api/users' \
         "userName": "rahul5140",
         "mobile": "8286246069",
         "city": "Mumbai",
-        "age": 27
+        "age": 27,
+        "dateOfBirth":":"03/16/1993"
     }
 }'
