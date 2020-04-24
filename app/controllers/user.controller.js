@@ -20,7 +20,8 @@ exports.create = (req, res) => {
     password:  bcrypt.hashSync(req.body.user.password, 8),
     mobile: req.body.user.mobile,
     city: req.body.user.city,
-    age: req.body.user.age
+    age: req.body.user.age,
+    dateOfBirth: req.body.user.dateOfBirth
   });
 
   // Save user in the database
@@ -182,7 +183,6 @@ exports.updatePassword = (req, res) =>{
 }
 
 exports.uploadImage = (req, res)=>{
-console.log('req', req);
   User.updateImagePath(
     req.userId,
     req.file.filename,

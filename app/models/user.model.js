@@ -11,6 +11,7 @@ const user = function(user) {
   this.mobile = user.mobile;
   this.city = user.city;
   this.age = user.age;
+  this.dateOfBirth = user.dateOfBirth
 };
 
 user.create = (newuser, result) => {
@@ -22,7 +23,7 @@ user.create = (newuser, result) => {
     }
 
     console.log("created user: ", { id: res.insertId, ...newuser });
-    result(null, { id: res.insertId, ...newuser });
+    result(null, {user:{ id: res.insertId, ...newuser }});
   });
 };
 
@@ -44,7 +45,8 @@ user.findById = (userId, result) => {
           city: res[0].city,
           mobile: res[0].mobile,
           email: res[0].email,
-          profileURL: `http://localhost:3000/public/profile/${res[0].image}`
+          profileURL: `http://localhost:3000/public/profile/${res[0].image}`,
+          dateOfBirth: res[0].dateOfBirth
       }});
       return;
     }
@@ -69,8 +71,8 @@ user.getAll = result => {
 
 user.updateById = (id, user, result) => {
   sql.query(
-    "UPDATE users SET email = ?, firstname = ?, lastname = ?, userName = ?, age = ?, mobile = ?, city = ?  WHERE id = ?",
-    [user.email, user.firstName,user.lastName, user.userName,user.age,user.mobile,user.city, id],
+    "UPDATE users SET email = ?, firstname = ?, lastname = ?, dateOfBirth = ?, userName = ?, age = ?, mobile = ?, city = ?  WHERE id = ?",
+    [user.email, user.firstName,user.lastName,user.dateOfBirth, user.userName,user.age,user.mobile,user.city, id],
     (err, res) => {
       if (err) {
         console.log("err= r: ", err);
@@ -181,7 +183,7 @@ user.updateImagePath = (id, user, result) => {
       }
 
       console.log("Image updated: ", { id: id, ...user });
-      result(null, {profileUrl: `http://localhost:3000/public/profile/${user}`});
+      result(null, {user:{profileUrl: `http://localhost:3000/public/profile/${user}`}});
     }
   );
 };
