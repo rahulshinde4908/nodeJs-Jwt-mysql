@@ -12,7 +12,8 @@ city VARCHAR(50),
 age INTEGER,
 password VARCHAR(200),
 userName VARCHAR(50),
-image varchar(255)
+image varchar(255),
+dateOfBirth VARCHAR(100)    
 );
 
 
